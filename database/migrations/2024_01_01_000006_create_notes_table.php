@@ -23,7 +23,10 @@ return new class extends Migration
             $table->softDeletes();
             
             $table->index(['user_id', 'is_pinned']);
-            $table->fullText(['title', 'content']);
+            
+            if (\Illuminate\Support\Facades\DB::getDriverName() !== 'sqlite') {
+                $table->fullText(['title', 'content']);
+            }
         });
     }
 
