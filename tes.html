@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Account - Marhas Update</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --bg-color: #0f0f12;
+            --card-bg: #18181b;
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+            --input-bg: #27272a;
+            --radius-iphone: 40px;
+            --radius-input: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .main-wrapper {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            max-height: 750px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 0;
+        }
+
+        /* --- LEFT PANEL (IMAGE) --- */
+        .left-panel {
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1542401886-65d6c61db217?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: var(--radius-iphone);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px;
+            box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6);
+            transition: transform 0.4s ease;
+        }
+
+        .left-panel:hover {
+            transform: scale(1.01);
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(15, 15, 18, 0.95));
+            z-index: 1;
+        }
+
+        .left-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .caption h2 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            width: 24px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        /* --- RIGHT PANEL (FORM) --- */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .subtitle a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        /* Inputs */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--input-bg);
+            border: 2px solid transparent;
+            border-radius: var(--radius-input);
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input::placeholder {
+            color: #52525b;
+        }
+
+        input:focus {
+            background: #1e1e24;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #71717a;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Terms */
+        .terms {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            padding: 0;
+        }
+
+        /* Buttons */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border: none;
+            border-radius: var(--radius-input);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px -8px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -8px rgba(139, 92, 246, 0.8);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #52525b;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #3f3f46;
+        }
+
+        .divider span {
+            padding: 0 15px;
+        }
+
+        .social-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-input);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-social:hover {
+            background: var(--card-bg);
+            border-color: #52525b;
+            transform: translateY(-2px);
+        }
+
+        .btn-social i {
+            font-size: 18px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1280px) {
+            .main-wrapper {
+                width: 95%;
+                height: 90vh;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                height: auto;
+                min-height: 90vh;
+                padding: 10px;
+                max-width: 500px;
+            }
+
+            .left-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                width: 98%;
+                padding: 5px;
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+        <div class="left-panel">
+            <div class="left-content">
+                <div class="logo">AMU <span></span></div>
+
+                <div class="bottom-info">
+                    <div class="caption">
+                        <h2>Capturing Moments,<br>Creating Memories</h2>
+                    </div>
+                    <div class="dots">
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="form-container">
+                <h1>Create an account</h1>
+                <p class="subtitle">Already have an account? <a href="#">Log in</a></p>
+
+                <form>
+                    <div class="form-row">
+                        <input type="text" placeholder="First name" value="Fletcher">
+                        <input type="text" placeholder="Last name">
+                    </div>
+
+                    <div class="input-group">
+                        <input type="email" placeholder="Email address">
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" placeholder="Create password">
+                        <i class="fa-regular fa-eye password-toggle"></i>
+                    </div>
+
+                    <div class="terms">
+                        <input type="checkbox" id="terms" checked>
+                        <label for="terms">I agree to the <a href="#">Terms & Conditions</a></label>
+                    </div>
+
+                    <button type="button" class="btn-submit">Create account</button>
+
+                    <div class="divider">
+                        <span>Or register with</span>
+                    </div>
+
+                    <div class="social-buttons">
+                        <button type="button" class="btn-social">
+                            <i class="fab fa-google" style="color:#ea4335;"></i>
+                            Google
+                        </button>
+                        <button type="button" class="btn-social">
+                            <i class="fab fa-apple" style="color:white;"></i>
+                            Apple
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
