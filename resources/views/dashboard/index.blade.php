@@ -1834,19 +1834,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Quick action buttons
+    // --- Finance Modal Logic with Categories ---
+    const categories = @json($categories);
+    const categorySelect = document.querySelector('select[name="category_id"]');
+    const typeOptions = document.querySelectorAll('.type-option');
+    const incomeRadio = document.querySelector('input[name="type"][value="income"]');
+    const expenseRadio = document.querySelector('input[name="type"][value="expense"]');
+
+    function filterCategories(type) {
+        if(!categorySelect) return;
+        categorySelect.innerHTML = '<option value="">-- Pilih Kategori --</option>';
+        categories.forEach(cat => {
+            if (cat.type === type) {
+                const option = document.createElement('option');
+                option.value = cat.id;
+                option.textContent = cat.name;
+                categorySelect.appendChild(option);
+            }
+        });
+    }
+
+    // Type Options Click Listener
+    typeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            typeOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            const radio = this.querySelector('input[type="radio"]');
+            if(radio) {
+                radio.checked = true;
+                filterCategories(radio.value);
+            }
+        });
+    });
+
+    // Initial Filter
+    if(incomeRadio && incomeRadio.checked) filterCategories('income');
+    if(expenseRadio && expenseRadio.checked) filterCategories('expense');
+
     document.getElementById('addIncomeBtn').addEventListener('click', function() {
         document.getElementById('financeModalTitle').textContent = 'Tambah Pemasukan';
-        document.getElementById('incomeOption').classList.add('active');
-        document.getElementById('expenseOption').classList.remove('active');
-        document.querySelector('input[name="type"][value="income"]').checked = true;
+        const opt = document.getElementById('incomeOption');
+        if(opt) opt.click();
         openModal('financeModal');
     });
 
     document.getElementById('addExpenseBtn').addEventListener('click', function() {
         document.getElementById('financeModalTitle').textContent = 'Tambah Pengeluaran';
-        document.getElementById('expenseOption').classList.add('active');
-        document.getElementById('incomeOption').classList.remove('active');
-        document.querySelector('input[name="type"][value="expense"]').checked = true;
+        const opt = document.getElementById('expenseOption');
+        if(opt) opt.click();
         openModal('financeModal');
     });
 
@@ -2116,71 +2151,7 @@ document.addEventListener('DOMContentLoaded', function() {
             aiVoiceIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
             aiVoiceIcon.style.color = "var(--danger-color)";
         });
-    }    }
+    }
 });
-    // --- Finance Modal & Category Filtering ---
-    const categories = @json($categories);
-    const categorySelect = document.querySelector('select[name="category_id"]');
-    const incomeRadio = document.querySelector('input[name="type"][value="income"]');
-    const expenseRadio = document.querySelector('input[name="type"][value="expense"]');
-    const typeOptions = document.querySelectorAll('.type-option');
-
-    function filterCategories(type) {
-        categorySelect.innerHTML = '<option value="">-- Pilih Kategori --</option>';
-        categories.forEach(cat => {
-            if (cat.type === type) {
-                const option = document.createElement('option');
-                option.value = cat.id;
-                option.textContent = cat.name;
-                categorySelect.appendChild(option);
-            }
-        });
-    }
-
-    // Event Listeners for Radio Buttons
-    typeOptions.forEach(option => {
-        option.addEventListener('click', function() {
-             // Visual Active State
-            typeOptions.forEach(opt => opt.classList.remove('active'));
-            this.classList.add('active');
-
-            // Find input inside label and trigger change safely
-            const radio = this.querySelector('input[type="radio"]');
-            if(radio) {
-                radio.checked = true;
-                filterCategories(radio.value);
-            }
-        });
-    });
-
-    // Initial Filter (Default to Income as per checks)
-    if(incomeRadio && incomeRadio.checked) filterCategories('income');
-    if(expenseRadio && expenseRadio.checked) filterCategories('expense');
-
-    // Modal Openers (Reset Filter)
-    const addIncomeBtn = document.getElementById('addIncomeBtn');
-    const addExpenseBtn = document.getElementById('addExpenseBtn');
-    const financeModal = document.getElementById('financeModal');
-    const modalTitle = document.getElementById('financeModalTitle');
-
-    if(addIncomeBtn) {
-        addIncomeBtn.onclick = function() {
-            document.getElementById('incomeOption').click(); // Triggers click handler above
-            modalTitle.innerText = "Tambah Pemasukan";
-            financeModal.classList.add('active');
-        };
-    }
-
-    if(addExpenseBtn) {
-        addExpenseBtn.onclick = function() {
-            document.getElementById('expenseOption').click();
-            modalTitle.innerText = "Tambah Pengeluaran";
-            financeModal.classList.add('active');
-        };
-    }
-
-    document.getElementById('closeFinanceModal').onclick = function() {
-        financeModal.classList.remove('active');
-    };
 </script>
 @endsection
